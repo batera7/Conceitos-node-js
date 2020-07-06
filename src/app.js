@@ -15,7 +15,7 @@ app.get("/repositories", (request, response) => {
 });
 
 app.post("/repositories", (request, response) => {
-  // TODO
+  const [ title, url, techs]
 });
 
 app.put("/repositories/:id", (request, response) => {
