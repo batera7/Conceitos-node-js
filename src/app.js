@@ -11,7 +11,13 @@ app.use(cors());
 const repositories = [];
 
 app.get("/repositories", (request, response) => {
-  // TODO
+  const { title } = request.query;
+
+    const results = title 
+    ? repositories.filter(project => project.title.includes(title))
+    : repositories;
+
+    return response.json(results)
 });
 
 app.post("/repositories", (request, response) => {
@@ -31,7 +37,25 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const { id } = request.params;
+  const { title, url, techs } = request.body;
+
+  const repositoryIndex = repositories.findIndex(repository => repository.id === id);
+
+  if (repositoryIndex <0) {
+    return response.status(400).json({ error: 'Repository not found ' })
+  }
+
+  const repository = {
+    title,
+    url,
+    techs,
+  }
+
+  repository[repositoryIndex] = repository;
+
+  return response.json(repository);
+
 });
 
 app.delete("/repositories/:id", (request, response) => {
