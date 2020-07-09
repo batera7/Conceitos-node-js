@@ -11,13 +11,13 @@ app.use(cors());
 const repositories = [];
 
 app.get("/repositories", (request, response) => {
-  const { title } = request.query;
+  return response.json(repositories);
 
-    const results = title 
-    ? repositories.filter(project => project.title.includes(title))
-    : repositories;
+    // const results = title 
+    // ? repositories.filter(project => project.title.includes(title))
+    // : repositories;
 
-    return response.json(results)
+    //return response.json(results)
 });
 
 app.post("/repositories", (request, response) => {
@@ -30,7 +30,7 @@ app.post("/repositories", (request, response) => {
     techs,
     likes : 0,
   };
-
+  
   repositories.push(repository);
 
   return response.json(repository);
@@ -39,6 +39,11 @@ app.post("/repositories", (request, response) => {
 app.put("/repositories/:id", (request, response) => {
   const { id } = request.params;
   const { title, url, techs } = request.body;
+  
+  if(request.body.likes){
+    return response.json({ error: "Não é possivel atualizar likes" })
+  }
+
 
   const repositoryIndex = repositories.findIndex(repository => repository.id === id);
 
@@ -54,7 +59,7 @@ app.put("/repositories/:id", (request, response) => {
 
   repository[repositoryIndex] = repository;
 
-  return response.json(repository);
+  return response.send();
 
 });
 
@@ -83,7 +88,7 @@ app.post("/repositories/:id/like", (request, response) => {
    }
 
    repository.likes += 1;
-
+   
    return response.json(repository);
 });
 
