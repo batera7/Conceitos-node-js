@@ -38,15 +38,11 @@ app.post("/repositories", (request, response) => {
 
 app.put("/repositories/:id", (request, response) => {
   const { id } = request.params;
-  const { title, url, techs } = request.body;
   
-  if(request.body.likes){
-    return response.json({ error: "Não é possivel atualizar likes" })
-  }
-
-
+  const { title, url, techs } = request.body;
+ 
   const repositoryIndex = repositories.findIndex(repository => repository.id === id);
-
+  
   if (repositoryIndex <0) {
     return response.status(400).json({ error: 'Repository not found ' })
   }
@@ -55,10 +51,11 @@ app.put("/repositories/:id", (request, response) => {
     title,
     url,
     techs,
-  }
+    
+    }
 
   repository[repositoryIndex] = repository;
-
+    
   return response.send();
 
 });
